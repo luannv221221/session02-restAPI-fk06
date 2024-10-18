@@ -46,4 +46,21 @@ public class StudentServiceImpl implements StudentService{
                 .gender(studentNew.isGender() ? "Nam" : "Nữ")
                 .build();
     }
+
+    @Override
+    public StudentResponseDTO findById(Long id) {
+        Student student = studentRepository.findById(id).orElse(null);
+        // convert
+        if(student!=null){
+            StudentResponseDTO studentResponseDTO = StudentResponseDTO
+                    .builder()
+                    .id(student.getId())
+                    .fullName(student.getFullName())
+                    .address(student.getAddress())
+                    .gender(student.isGender() ? "Nam" : "Nu")
+                    .build();
+            return studentResponseDTO;
+        }
+        return null;
+    }
 }

@@ -1,5 +1,6 @@
 package com.ra.session02.controller;
 
+import com.ra.session02.model.dto.DataError;
 import com.ra.session02.model.dto.StudentRequestDTO;
 import com.ra.session02.model.dto.StudentResponseDTO;
 import com.ra.session02.service.StudentService;
@@ -24,6 +25,14 @@ public class StudentController {
     public ResponseEntity<StudentResponseDTO> create(@RequestBody StudentRequestDTO studentRequestDTO){
         StudentResponseDTO studentResponseDTO = studentService.create(studentRequestDTO);
         return new ResponseEntity<>(studentResponseDTO,HttpStatus.CREATED);
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<?> findById(@PathVariable Long id){
+        StudentResponseDTO studentResponseDTO = studentService.findById(id);
+        if(studentResponseDTO!=null){
+            return new ResponseEntity<>(studentResponseDTO,HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new DataError("Không tìm thấy"),HttpStatus.NOT_FOUND);
     }
 
 }
