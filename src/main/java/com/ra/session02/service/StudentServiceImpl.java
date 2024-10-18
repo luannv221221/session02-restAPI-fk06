@@ -1,5 +1,6 @@
 package com.ra.session02.service;
 
+import com.ra.session02.model.dto.StudentRequestDTO;
 import com.ra.session02.model.dto.StudentResponseDTO;
 import com.ra.session02.model.entity.Student;
 import com.ra.session02.repository.StudentRepository;
@@ -26,5 +27,23 @@ public class StudentServiceImpl implements StudentService{
            studentResponseDTOS.add(studentResponseDTO);
         }
         return studentResponseDTOS;
+    }
+
+    @Override
+    public StudentResponseDTO create(StudentRequestDTO studentRequestDTO) {
+        // convert DTO -> Entity
+        Student student = Student.builder().
+                fullName(studentRequestDTO.getFullName())
+                .gender(studentRequestDTO.isGender())
+                .address(studentRequestDTO.getAddress())
+                .build();
+        Student studentNew = studentRepository.save(student);
+        // convert Entity --> DTO
+        return StudentResponseDTO
+                .builder().id(studentNew.getId())
+                .fullName(studentNew.getFullName())
+                .address(studentNew.getAddress())
+                .gender(studentNew.isGender() ? "Nam" : "Nữ")
+                .build();
     }
 }
